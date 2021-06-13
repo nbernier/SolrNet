@@ -66,12 +66,11 @@ namespace SolrNet.Tests.Integration {
         [Fact]
         public void Add_then_query() {
             const string name = "Samsuñg SpinPoint P120 SP2514N - hárd drívè - 250 GB - ÁTÀ-133";
-            var guid = new Guid("{78D734ED-12F8-44E0-8AA3-8CA3F353998D}");
             var p = new Product {
                 Id = "SP2514N",
-                Name = name,
+                Name = new[] {name},
                 // testing UTF
-                Manufacturer = "Samsung Electronics Co. Ltd.",
+                Manufacturer = new[] {"Samsung Electronics Co. Ltd."},
                 Categories = new[] {
                     "electronics",
                     "hard drive",
@@ -83,10 +82,10 @@ namespace SolrNet.Tests.Integration {
                     @"ÚóÁ⌠╒""ĥÛē…<>ܐóジャストシステムは、日本で初めてユニコードベースのワードプロセ ッサーを開発しました。このことにより、10年以上も前から、日本のコンピューターユーザーはユニコード、特に日中韓の統合漢 字の恩恵を享受してきました。ジャストシステムは現在、”xfy”というJava環境で稼働する 先進的なXML関連製品の世界市場への展開を積極的に推進していますが、ユニコードを基盤としているために、”xfy”は初めから国際化されているのです。ジャストシステムは、ユニコードの普遍的な思想とアーキテクチャに 感謝するとともに、その第5版の刊行を心から歓迎します",
                     @"control" + (char)0x07 + (char)0x01 + (char)0x0E +(char)0x1F + (char)0xFFFE, // testing control chars
                 },
-                Price = 92,
-                PriceMoney = new Money(92m, "USD"),
-                Popularity = 6,
-                InStock = true,
+                Price = new[] {92m},
+                PriceMoney = new[] {new Money(92m, "USD")},
+                Popularity = new[] {6},
+                InStock = new[] {true},
             };
 
             var solr = ServiceLocator.Current.GetInstance<ISolrOperations<Product>>();
@@ -97,9 +96,9 @@ namespace SolrNet.Tests.Integration {
             solr.Query(new SolrQueryByField("name", @"3;Furniture"));
             var products = solr.Query(new SolrQueryByRange<decimal>("price", 10m, 100m).Boost(2));
             Assert.Single(products);
-            Assert.Equal(name, products[0].Name);
+            Assert.Equal(name, products[0].Name.First());
             Assert.Equal("SP2514N", products[0].Id);
-            Assert.Equal(92m, products[0].Price);
+            Assert.Equal(92m, products[0].Price.First());
             Assert.NotNull(products.Header);
             testOutputHelper.WriteLine("QTime is {0}", products.Header.QTime);
         }
@@ -107,8 +106,8 @@ namespace SolrNet.Tests.Integration {
         private static readonly IEnumerable<Product> products = new[] {
             new Product {
                 Id = "DEL12345",
-                Name = "Delete test product 1",
-                Manufacturer = "Acme ltd",
+                Name = new[] {"Delete test product 1"},
+                Manufacturer = new[] {"Acme ltd"},
                 Categories = new[] {
                     "electronics",
                     "test products",
@@ -117,15 +116,15 @@ namespace SolrNet.Tests.Integration {
                     "feature 1",
                     "feature 2",
                 },
-                Price = 92,
-                PriceMoney = new Money(123.44m, "EUR"),
-                Popularity = 6,
-                InStock = false,
+                Price = new[] {92m},
+                PriceMoney = new[] {new Money(123.44m, "EUR")},
+                Popularity = new[] {6},
+                InStock = new[] {false},
             },
             new Product {
                 Id = "DEL12346",
-                Name = "Delete test product 2",
-                Manufacturer = "Acme ltd",
+                Name = new[] {"Delete test product 2"},
+                Manufacturer = new[] {"Acme ltd"},
                 Categories = new[] {
                     "electronics",
                     "test products",
@@ -134,15 +133,15 @@ namespace SolrNet.Tests.Integration {
                     "feature 1",
                     "feature 3",
                 },
-                Price = 92,
-                PriceMoney = new Money(123.44m, "ARS"),
-                Popularity = 6,
-                InStock = false,
+                Price = new[] {92m},
+                PriceMoney = new[] {new Money(123.44m, "ARS")},
+                Popularity = new[] {6},
+                InStock = new[] {false},
             },
             new Product {
                 Id = "DEL12347",
-                Name = "Delete test product 3",
-                Manufacturer = "Acme ltd",
+                Name = new[] {"Delete test product 3"},
+                Manufacturer = new[] {"Acme ltd"},
                 Categories = new[] {
                     "electronics",
                     "test products",
@@ -151,10 +150,10 @@ namespace SolrNet.Tests.Integration {
                     "feature 1",
                     "feature 3",
                 },
-                Price = 92,
-                PriceMoney = new Money(123.44m, "GBP"),
-                Popularity = 6,
-                InStock = false,
+                Price = new[] {92m},
+                PriceMoney = new[] {new Money(123.44m, "GBP")},
+                Popularity = new[] {6},
+                InStock = new[] {false},
             }
         };
 
@@ -297,7 +296,7 @@ namespace SolrNet.Tests.Integration {
                 OrderBy = new[] {new RandomSortOrder("random")}
             });
             foreach (var r in results)
-                testOutputHelper.WriteLine(r.Manufacturer);
+                testOutputHelper.WriteLine(r.Manufacturer.First());
         }
 
         [Fact]
@@ -307,14 +306,14 @@ namespace SolrNet.Tests.Integration {
             solr.Add(new Product {
                 Id = "apache-cocoon",
                 Categories = new[] {"framework", "java"},
-                Name = "Apache Cocoon",
-                Manufacturer = "Apache",
+                Name = new[] {"Apache Cocoon"},
+                Manufacturer = new[] {"Apache"},
             });
             solr.Add(new Product {
                 Id = "apache-hadoop",
                 Categories = new[] { "framework", "java", "mapreduce" },
-                Name = "Apache Hadoop",
-                Manufacturer = "Apache",
+                Name = new[] {"Apache Hadoop"},
+                Manufacturer = new[] {"Apache"},
             });
             solr.Commit();
             var results = solr.Query(new SolrQuery("apache"), new QueryOptions {
@@ -402,9 +401,9 @@ namespace SolrNet.Tests.Integration {
             Assert.NotEmpty(results);
             Assert.IsType<ArrayList>(results[0]["cat"]);
             Assert.IsType<string>(results[0]["id"]);
-            Assert.IsType<bool>(results[0]["inStock"]);
-            Assert.IsType<int>(results[0]["popularity"]);
-            Assert.IsType<float>(results[0]["price"]);
+            Assert.IsAssignableFrom<ICollection<bool>>(results[0]["inStock"]);
+            Assert.IsAssignableFrom<ICollection<int>>(results[0]["popularity"]);
+            Assert.IsAssignableFrom<ICollection<float>>(results[0]["price"]);
             Assert.IsType<DateTime>(results[0]["timestamp"]);
             Assert.IsType<string>(((IList) results[0]["cat"])[0]);
             foreach (var r in results)
@@ -588,8 +587,8 @@ namespace SolrNet.Tests.Integration {
             Product productAfterUpdate = solr.Query("id:SP2514N")[0];
             Assert.True(productAfterUpdate.Features.Contains("Feature 3"));
             Assert.True(productAfterUpdate.Features.Contains("Feature 4"));
-            Assert.Equal("MyCo", productAfterUpdate.Manufacturer);
-            Assert.Equal(93, productAfterUpdate.Price);
+            Assert.Equal("MyCo", productAfterUpdate.Manufacturer.First());
+            Assert.Equal(93, productAfterUpdate.Price.First());
             Assert.False(productAfterUpdate.Features.Contains("hard drive"));
         }
     }

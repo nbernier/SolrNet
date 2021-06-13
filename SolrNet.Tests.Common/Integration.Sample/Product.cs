@@ -24,10 +24,10 @@ namespace SolrNet.Tests.Integration.Sample {
 		public string Id { get; set; }
 
 		[SolrField("name")]
-		public string Name { get; set; }
+		public ICollection<string> Name { get; set; }
 
 		[SolrField("manu")]
-		public string Manufacturer { get; set; }
+		public ICollection<string> Manufacturer { get; set; }
 
 		[SolrField("cat")]
 		public ICollection<string> Categories { get; set; }
@@ -36,18 +36,18 @@ namespace SolrNet.Tests.Integration.Sample {
 		public ICollection<string> Features { get; set; }
 
 		[SolrField("weight")]
-		public float Weight { get; set; }
+		public ICollection<float> Weight { get; set; }
 
 		[SolrField("price")]
-		public decimal Price { get; set; }
+		public ICollection<decimal> Price { get; set; }
 
 		[SolrField("popularity")]
-		public int Popularity { get; set; }
+		public ICollection<int> Popularity { get; set; }
 
 		[SolrField("inStock")]
-		public bool InStock { get; set; }
+		public ICollection<bool> InStock { get; set; }
 
         [SolrField("price_c")]
-        public Money PriceMoney { get; set; }
+        public ICollection<Money> PriceMoney { get; set; }
 	}
 }

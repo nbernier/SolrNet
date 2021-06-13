@@ -7,7 +7,7 @@ namespace SolrNet.Tests.Integration.Sample {
         public string Id { get; set; }
 
         [SolrField("name")]
-        public string Name { get; set; }
+        public ICollection<string> Name { get; set; }
 
         [SolrField("score")]
         public double? Score { get; set; }
