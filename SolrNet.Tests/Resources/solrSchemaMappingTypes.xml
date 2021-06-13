@@ -151,7 +151,7 @@
     <field name="inStock" type="boolean" indexed="true" stored="true" />
     <field name="title" type="text" indexed="true" stored="true"/>
     <field name="text" type="text" indexed="true" stored="false" multiValued="true"/>
-    <field name="manu_exact" type="string" indexed="true" stored="false"/>
+    <field name="manu_str" type="string" indexed="true" stored="false"/>
     <field name="payloads" type="payloads" indexed="true" stored="true"/>
     <field name="timestamp" type="date" indexed="true" stored="true" default="NOW" multiValued="false"/>
     <dynamicField name="*_i"  type="int"    indexed="true"  stored="true"/>
@@ -181,6 +181,6 @@
   <copyField source="manu" dest="text"/>
   <copyField source="features" dest="text"/>
   <copyField source="includes" dest="text"/>
-  <copyField source="manu" dest="manu_exact"/>
+  <copyField source="manu" dest="manu_str"/>
   <copyField source="name" dest="nameSort"/>
 </schema>

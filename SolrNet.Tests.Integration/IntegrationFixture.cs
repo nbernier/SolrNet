@@ -437,7 +437,7 @@ namespace SolrNet.Tests.Integration {
         public void FieldCollapsing() {
             var solr = ServiceLocator.Current.GetInstance<ISolrBasicOperations<Product>>();
             var results = solr.Query(SolrQuery.All, new QueryOptions {
-                Collapse = new CollapseParameters("manu_exact") { 
+                Collapse = new CollapseParameters("manu_str") { 
                     Type = CollapseType.Adjacent,
                     MaxDocs = 1,
                 }
@@ -454,7 +454,7 @@ namespace SolrNet.Tests.Integration {
 			{
 				Grouping = new GroupingParameters()
 				{
-					Fields = new [] { "manu_exact" },
+					Fields = new [] { "manu_str" },
 					Format = GroupingFormat.Grouped,
 					Limit = 1,
 				}
@@ -462,12 +462,12 @@ namespace SolrNet.Tests.Integration {
 			
 			testOutputHelper.WriteLine("Group.Count {0}", results.Grouping.Count);
 			Assert.Equal(1, results.Grouping.Count);
-			Assert.True(results.Grouping.ContainsKey("manu_exact"));
+			Assert.True(results.Grouping.ContainsKey("manu_str"));
             
             // TODO the following assertions fails, maybe the data isn't set up correctly?
-            // Assert.True(results.Grouping["manu_exact"].Groups.Count >= 1, 
-            // $"Got {results.Grouping["manu_exact"].Groups.Count} groups: " +
-            // string.Join(", ", results.Grouping["manu_exact"].Groups.Select(g => g.GroupValue)));
+            // Assert.True(results.Grouping["manu_str"].Groups.Count >= 1, 
+            // $"Got {results.Grouping["manu_str"].Groups.Count} groups: " +
+            // string.Join(", ", results.Grouping["manu_str"].Groups.Select(g => g.GroupValue)));
 		}
 
         [Fact(Skip = "Crashes Solr with 'numHits must be &gt; 0; please use TotalHitCountCollector if you just need the total hit count' (?)")]
@@ -478,7 +478,7 @@ namespace SolrNet.Tests.Integration {
             {
                 Grouping = new GroupingParameters()
                 {
-                    Query = new[] { new SolrQuery("manu_exact"), new SolrQuery("name") },
+                    Query = new[] { new SolrQuery("manu_str"), new SolrQuery("name") },
                     Format = GroupingFormat.Grouped,
                     Limit = 1,
                 }
@@ -486,9 +486,9 @@ namespace SolrNet.Tests.Integration {
 
             testOutputHelper.WriteLine("Group.Count {0}", results.Grouping.Count);
             Assert.Equal(2, results.Grouping.Count);
-            Assert.True(results.Grouping.ContainsKey("manu_exact"));
+            Assert.True(results.Grouping.ContainsKey("manu_str"));
             Assert.True(results.Grouping.ContainsKey("name"));
-            Assert.True (results.Grouping["manu_exact"].Groups.Count >= 1);
+            Assert.True (results.Grouping["manu_str"].Groups.Count >= 1);
             Assert.True(results.Grouping["name"].Groups.Count >= 1);
         }
             

@@ -32,7 +32,7 @@ namespace SolrNet.Tests {
             var results = new SolrQueryResults<TestDoc>();
             parser.Parse(xml, results);
             Assert.NotNull(results.Collapsing);
-            Assert.Equal("manu_exact", results.Collapsing.Field);
+            Assert.Equal("manu_str", results.Collapsing.Field);
             Assert.Equal(5, results.Collapsing.CollapsedDocuments.Count);
             var firstCollapse = results.Collapsing.CollapsedDocuments.ElementAt(0);
             Assert.Equal("F8V7067-APL-KIT", firstCollapse.Id);
@@ -47,7 +47,7 @@ namespace SolrNet.Tests {
             var results = new SolrQueryResults<TestDoc>();
             parser.Parse(xml, results);
             Assert.NotNull(results.Collapsing);
-            Assert.Equal("manu_exact", results.Collapsing.Field);
+            Assert.Equal("manu_str", results.Collapsing.Field);
             Assert.Equal(3, results.Collapsing.CollapsedDocuments.Count);
             var firstCollapse = results.Collapsing.CollapsedDocuments.ElementAt(0);
             Assert.Equal("F8V7067-APL-KIT", firstCollapse.Id);

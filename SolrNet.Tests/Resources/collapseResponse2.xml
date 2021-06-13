@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <response>
   <lst name="collapse_counts">
-    <str name="field">manu_exact</str>
+    <str name="field">manu_str</str>
     <lst name="results">
       <lst name="F8V7067-APL-KIT">
         <int name="collapseCount">1</int>
