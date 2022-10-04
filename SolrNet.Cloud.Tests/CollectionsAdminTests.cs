@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Reflection;
 using Xunit;
 using SolrNet.Cloud.CollectionsAdmin;
 using SolrNet.Impl;
@@ -7,10 +8,13 @@ using SolrNet.Impl.ResponseParsers;
 using SolrNet.Cloud.ZooKeeperClient;
 using System.Threading;
 using System.Threading.Tasks;
+using SolrNet.Tests.Integration;
+using Xunit.Abstractions;
 
 namespace SolrNet.Cloud.Tests
 {
     [Trait("Category", "Integration")]
+    [TestCaseOrderer(MethodDefTestCaseOrderer.Type, MethodDefTestCaseOrderer.Assembly)]
     public class CollectionsAdminTests : IAsyncLifetime
     {
         private const string COLLECTION_NAME = "test";
@@ -23,15 +27,23 @@ namespace SolrNet.Cloud.Tests
         private const string CLUSTER_PROPERTY_NAME = "autoAddReplicas";
         private const string COLLECTION_ALIAS = "test_alias";
 
-        private string SOLR_CONNECTION_URL = "http://solr:8983/solr";
+        private string SOLR_CONNECTION_URL = "http://localhost:8983/solr";
         private SolrConnection solrconnection;
 
         private SolrCollectionsAdmin collections;
 
-        private const string ZOOKEEPER_CONNECTION = "zoo:9983";
+        private const string ZOOKEEPER_CONNECTION = "localhost:9983";
         private const int ZOOKEEPER_REFRESH_PERIOD_MSEC = 2000;
         private ISolrCloudStateProvider solrCloudStateProvider = null;
 
+        public CollectionsAdminTests(ITestOutputHelper output)
+        {
+            // https://github.com/xunit/xunit/issues/416#issuecomment-378512739
+            var type = output.GetType();
+            var testMember = type.GetField("test", BindingFlags.Instance | BindingFlags.NonPublic);
+            var test = (ITest)testMember.GetValue(output);
+            Console.WriteLine("Starting " + test.DisplayName);
+        }
     
         [Fact]
         public async Task ReloadCollection()
@@ -310,7 +322,7 @@ namespace SolrNet.Cloud.Tests
 
         private Task<SolrCloudState> GetFreshCloudStateAsync()
         {
-            return (solrCloudStateProvider as SolrCloudStateProvider).GetFreshCloudStateAsync();
+            return solrCloudStateProvider.GetFreshCloudStateAsync();
         }
 
         private async Task<SolrCloudCollection> AssertCollectionPresenceByCloudStateAsync(string collectionName)

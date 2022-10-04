@@ -1,13 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="CommonServiceLocator" Version="2.0.2" />
     <PackageReference Include="Castle.Core" Version="4.2.1" />
     <PackageReference Include="Castle.Windsor" Version="4.1.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.5.0" />
+    <PackageReference Include="LightInject" Version="4.1.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
     <PackageReference Include="xunit" Version="2.4.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="5.0.0" />
@@ -15,25 +15,12 @@
  
   <ItemGroup>
     <ProjectReference Include="..\CommonServiceLocator.SolrNet.Cloud\CommonServiceLocator.SolrNet.Cloud.csproj" />
+    <ProjectReference Include="..\LightInject.SolrNet\LightInject.SolrNet.csproj" />
     <ProjectReference Include="..\SolrNet.Cloud\SolrNet.Cloud.csproj" />
     <ProjectReference Include="..\CommonServiceLocator.SolrNet\CommonServiceLocator.SolrNet.csproj" />
     <ProjectReference Include="..\SolrNet.Tests.Common\SolrNet.Tests.Common.csproj" />
     <ProjectReference Include="..\SolrNet\SolrNet.csproj" />
     <ProjectReference Include="..\Unity.SolrNetCloudIntegration\Unity.SolrNetCloudIntegration.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="exampledocs\hd.xml" CopyToOutputDirectory="PreserveNewest" />
-    <Content Include="exampledocs\ipod_other.xml" CopyToOutputDirectory="PreserveNewest" />
-    <Content Include="exampledocs\ipod_video.xml" CopyToOutputDirectory="PreserveNewest" />
-    <Content Include="exampledocs\mem.xml" CopyToOutputDirectory="PreserveNewest" />
-    <Content Include="exampledocs\monitor.xml" CopyToOutputDirectory="PreserveNewest" />
-    <Content Include="exampledocs\monitor2.xml" CopyToOutputDirectory="PreserveNewest" />
-    <Content Include="exampledocs\mp500.xml" CopyToOutputDirectory="PreserveNewest" />
-    <Content Include="exampledocs\sd500.xml" CopyToOutputDirectory="PreserveNewest" />
-    <Content Include="exampledocs\solr.xml" CopyToOutputDirectory="PreserveNewest" />
-    <Content Include="exampledocs\utf8-example.xml" CopyToOutputDirectory="PreserveNewest" />
-    <Content Include="exampledocs\vidcard.xml" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
   <ItemGroup>

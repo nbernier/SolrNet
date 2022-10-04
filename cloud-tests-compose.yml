@@ -1,38 +1,25 @@
 version: '3.7'
 services:
   solr:
-    image: solr:8.7.0
+    image: solr:${SOLR_VERSION}
     container_name: solr
+    network_mode: host
     logging:
       driver: none
-    ports:
-      - "8983:8983"
     environment:
-      ZK_HOST: zoo:9983
+      ZK_HOST: localhost:9983
+      # https://issues.apache.org/jira/browse/SOLR-15139?focusedCommentId=17279628&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-17279628
+      SOLR_OPTS: "-Dsolr.jetty.http.idleTimeout=60000 -DsocketTimeout=60000 -DconnTimeout=60000"
     depends_on:
       - zoo
   zoo:
-    image: zookeeper
+    image: zookeeper:3.6.3
     container_name: zoo
+    network_mode: host
     logging:
       driver: none
-    hostname: zoo
-    ports:
-      - "9983:9983"
     environment:
       ZOO_MY_ID: 1
       ZOO_SERVERS: server.1=zoo:2888:3888;9983
       ZOO_4LW_COMMANDS_WHITELIST: mntr, conf, ruok
       ZOO_CFG_EXTRA: "metricsProvider.className=org.apache.zookeeper.metrics.prometheus.PrometheusMetricsProvider metricsProvider.httpPort=7000 metricsProvider.exportJvmInfo=true"
-  integration_tests:
-    image: mcr.microsoft.com/dotnet/sdk:5.0-alpine
-    depends_on:
-    - solr
-    volumes:
-    - .:/code
-    - $HOME/.nuget:/root/.nuget
-    working_dir: /code
-    command: dotnet test SolrNet.Cloud.Tests --filter 'Category=Integration'
-
-
-

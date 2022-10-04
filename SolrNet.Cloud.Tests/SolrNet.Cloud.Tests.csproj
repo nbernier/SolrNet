@@ -5,7 +5,6 @@
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
   </PropertyGroup>
   <ItemGroup>
     <Content Include="resources\clusterstate1.json">
@@ -32,6 +31,7 @@
     <ProjectReference Include="..\CommonServiceLocator.SolrNet\CommonServiceLocator.SolrNet.csproj" />
     <ProjectReference Include="..\CommonServiceLocator.SolrNet.Cloud\CommonServiceLocator.SolrNet.Cloud.csproj" />
     <ProjectReference Include="..\SolrNet.Cloud\SolrNet.Cloud.csproj" />
+    <ProjectReference Include="..\SolrNet.Tests.Integration\SolrNet.Tests.Integration.csproj" />
     <ProjectReference Include="..\SolrNet\SolrNet.csproj" />
     <ProjectReference Include="..\Unity.SolrNetCloudIntegration\Unity.SolrNetCloudIntegration.csproj" />
   </ItemGroup>
@@ -40,8 +40,8 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="CommonServiceLocator" Version="2.0.2" />
-    <PackageReference Include="log4net" Version="2.0.8" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
     <PackageReference Include="Unity" Version="5.0.0" />
     <PackageReference Include="xunit" Version="2.4.1" />
